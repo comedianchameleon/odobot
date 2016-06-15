@@ -650,11 +650,14 @@ exports.commands = {
 
 		var tarRoom;
 		if (this.roomType === 'pm') {
+			return false;
 			if (!this.isRanked(Tools.getGroup('admin'))) return false;
 			tarRoom = 'global';
 		} else {
 			tarRoom = room;
 		}
+
+		//if (toId(tarRoom === 'lobby')) return this.reply("This command cannot set joinphrases for the Lobby.");
 
 		var targetObj = Tools.getTargetRoom(arg);
 		var textHelper = '';
