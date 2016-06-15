@@ -1,8 +1,6 @@
-const Pokedex_File = './../../data/pokedex.js';
-const Movedex_File = './../../data/moves.js';
-const Abilitydex_File = './../../data/abilities.js';
-const Itemdex_File = './../../data/items.js';
-const FormatData_File = './../../data/formats-data.js';
+/*
+ * Random Pokemon Words
+ */
 
 var Pokedex, Movedex, Itemdex, Abilitydex, Natures;
 var FormatData = {};
@@ -13,11 +11,11 @@ Natures = exports.Natures = ['Adamant', 'Bashful', 'Bold', 'Brave', 'Calm', 'Car
 
 function getData () {
 	try {
-		Pokedex = exports.Pokedex = require(Pokedex_File).BattlePokedex;
-		Movedex = exports.Movedex = require(Movedex_File).BattleMovedex;
-		Itemdex = exports.Itemdex = require(Itemdex_File).BattleItems;
-		Abilitydex = exports.Abilitydex = require(Abilitydex_File).BattleAbilities;
-		FormatData = exports.FormatData = require(FormatData_File).BattleFormatsData;
+		Pokedex = exports.Pokedex = DataDownloader.getPokedex();
+		Movedex = exports.Movedex = DataDownloader.getMovedex();
+		Itemdex = exports.Itemdex = DataDownloader.getItems();
+		Abilitydex = exports.Abilitydex = DataDownloader.getAbilities();
+		FormatData = exports.FormatData = DataDownloader.getFormatsData();
 	} catch (e) {
 		return e;
 	}
@@ -27,7 +25,7 @@ function rand (arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
 
-var randomPoke = exports.randomPoke = function () {
+var randomPoke = exports.randomPoke = function (lang) {
 	var pokeArr = Object.keys(Pokedex);
 	if (!pokeArr.length) return null;
 	var pokeId = rand(pokeArr);
@@ -64,12 +62,12 @@ var randomPoke = exports.randomPoke = function () {
 			break;
 	}
 	return {
-		word: chosen.species,
+		word: Tools.tryTranslate("pokemon", chosen.species, lang),
 		clue: 'Pokemon, ' + clue
 	};
 };
 
-var randomMove = exports.randomMove = function () {
+var randomMove = exports.randomMove = function (lang) {
 	var moveArr = Object.keys(Movedex);
 	if (!moveArr.length) return null;
 	var moveId = rand(moveArr);
@@ -85,12 +83,12 @@ var randomMove = exports.randomMove = function () {
 			break;
 	}
 	return {
-		word: chosen.name,
+		word: Tools.tryTranslate("moves", chosen.name, lang),
 		clue: 'Move, ' + clue
 	};
 };
 
-var randomItem = exports.randomItem = function () {
+var randomItem = exports.randomItem = function (lang) {
 	var itemArr = Object.keys(Itemdex);
 	if (!itemArr.length) return null;
 	var itemId = rand(itemArr);
@@ -114,53 +112,53 @@ var randomItem = exports.randomItem = function () {
 			break;
 	}
 	return {
-		word: chosen.name,
+		word: Tools.tryTranslate("items", chosen.name, lang),
 		clue: 'Item, ' + clue
 	};
 };
 
-var randomAbility = exports.randomAbility = function () {
+var randomAbility = exports.randomAbility = function (lang) {
 	var abilityArr = Object.keys(Abilitydex);
 	if (!abilityArr.length) return null;
 	var abilityId = rand(abilityArr);
 	var chosen = Abilitydex[abilityId];
 	return {
-		word: chosen.name,
+		word: Tools.tryTranslate("abilities", chosen.name, lang),
 		clue: 'Ability'
 	};
 };
 
-var randomNature = exports.randomNature = function () {
+var randomNature = exports.randomNature = function (lang) {
 	if (!Natures.length) return null;
 	return {
-		word: rand(Natures),
+		word: Tools.tryTranslate("natures", rand(Natures), lang),
 		clue: 'Nature'
 	};
 };
 
-exports.random = function () {
+exports.random = function (lang) {
 	if (getData()) return null;
 	var res = null;
 	var r = Math.random() * 100;
 	if (r <= 40) {
-		res = randomPoke();
+		res = randomPoke(lang);
 	} else if (r <= 60) {
-		res = randomMove();
+		res = randomMove(lang);
 	} else if (r <= 80) {
-		res = randomItem();
+		res = randomItem(lang);
 	} else if (r <= 90) {
-		res = randomAbility();
+		res = randomAbility(lang);
 	} else {
-		res = randomNature();
+		res = randomNature(lang);
 	}
 	return res;
 };
 
-exports.randomNoRepeat = function (arr) {
-	if (!arr) return exports.random();
+exports.randomNoRepeat = function (arr, lang) {
+	if (!arr) return exports.random(lang);
 	var temp;
 	do {
-		temp = exports.random();
+		temp = exports.random(lang);
 	} while (arr.indexOf(temp.word) >= 0);
 	return temp;
 };

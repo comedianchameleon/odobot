@@ -9,134 +9,27 @@ exports.commands = {
 	eb: 'evalbattle',
 	evalbattle: function (arg, by, room, cmd) {
 		if (!this.isExcepted) return false;
+		this.sclog();
 		var tarRoom = room;
 		var tarObj = Tools.getTargetRoom(arg);
 		if (tarObj) {
 			arg = tarObj.arg;
 			tarRoom = tarObj.room;
 		}
-		if (!Features['battle'] || !Features['battle'].BattleBot || !Features['battle'].BattleBot.data) return false;
-		if (!Features['battle'].BattleBot.data[tarRoom]) return this.reply('Battle "' + tarRoom + '" not found');
-		var battleContext = {
-			id: tarRoom,
-			room: room,
-			data: Features['battle'].BattleBot.data[tarRoom],
-			request: Features['battle'].BattleBot.data[tarRoom].request,
-			status: Features['battle'].BattleBot.data[tarRoom].statusData,
-			opponentTeamData: Features['battle'].BattleBot.data[tarRoom].oppTeamOffSet,
-			opponentTeam: Features['battle'].BattleBot.data[tarRoom].oppTeam,
-			system: Features['battle'].BattleBot,
-			sendBattle: function (data) {
-				return Bot.say(this.id, data);
-			},
-			report: function (data) {
-				Bot.say(this.room, data);
-				return '';
-			},
-			manual: function (flag) {
-				if (flag === undefined) flag = true;
-				this.data['manual'] = flag;
-				if (flag) this.sendBattle('/undo');
-				return this.data['manual'];
-			},
-			timer: function (flag) {
-				if (flag === undefined) flag = true;
-				if (flag) this.sendBattle('/timer on');
-				else this.sendBattle('/timer off');
-				return !!flag;
-			},
-			decision: function (decision) {
-				var rqid = 0;
-				if (this.request) rqid = parseInt(this.request.rqid);
-				if (decision.length === undefined) decision = [decision];
-				return this.system.sendDecision(this.id, decision, rqid);
-			},
-			moves: function (num) {
-				if (!num) num = 0;
-				if (!this.request.active || !this.request.active[num] || !this.request.active[num].moves) return [];
-				var poke = this.request.active[num];
-				var moves = [];
-				for (var i in poke.moves) {
-					moves.push(poke.moves[i].move);
-				}
-				return moves;
-			},
-			pokemon: function () {
-				var pokes = [];
-				if (this.request && this.request.side && this.request.side.pokemon) {
-					var poke;
-					for (var i = 0; i < this.request.side.pokemon.length; i++) {
-						if (this.request.side.pokemon[i].details.indexOf(",") > -1) poke = this.request.side.pokemon[i].details.substr(0, this.request.side.pokemon[i].details.indexOf(","));
-						else poke = this.request.side.pokemon[i].details;
-						pokes.push(poke);
-					}
-				}
-				return pokes;
-			},
-			move: function (move, mega, target, poke) {
-				if (typeof move === 'string') {
-					var moves = this.moves(poke || 0);
-					for (var i = 0; i < moves.length; i++) moves[i] = toId(moves[i]);
-					return {type: 'move', move: (moves.indexOf(toId(move)) + 1), mega: mega, target: target};
-				} else {
-					return {type: 'move', move: parseInt(move), mega: mega, target: target};
-				}
-			},
-			"switch": function (pokemon) {
-				var side = this.pokemon();
-				for (var i = 0; i < side.length; i++) side[i] = toId(side[i]);
-				if (typeof pokemon === "string" && side.indexOf(toId(pokemon)) >= 0) {
-					return {type: 'switch', switchIn: (side.indexOf(toId(pokemon)) + 1)};
-				} else {
-					return {type: 'switch', switchIn: parseInt(pokemon)};
-				}
-			},
-			pass: function () {
-				return {type: 'pass'};
-			},
-			team: function (team) {
-				return {type: 'team', team: team};
-			},
-			random: function () {
-				return this.system.getRandomMove(this.id);
-			},
-			cancel: function () {
-				this.sendBattle('/undo');
-				return true;
-			},
-			rejoin: function () {
-				this.system.rejoin(this.id);
-				return '';
-			},
-			forfeit: function () {
-				this.sendBattle('/forfeit');
-				return '';
-			}
-		};
-		var evalFunction = function (txt) {
-			try {
-				var battle = this;
-
-				/* Fast access methods - decisions */
-				var choose = this.decision.bind(this);
-				var move = this.move.bind(this);
-				var sw = this.switch.bind(this);
-				var pass = this.pass.bind(this);
-				var team = this.team.bind(this);
-				var cancel = this.cancel.bind(this);
-
-				/* Eval */
-				var result = eval(txt.trim());
-				if (result !== '') Bot.say(room, '``' + JSON.stringify(result) + '``');
-			} catch (e) {
-				Bot.say(room, e.name + ": " + e.message);
-			}
-		};
-		evalFunction.call(battleContext, arg);
+		if (!Features['battle'] || !Features['battle'].BattleBot || !Features['battle'].BattleBot.battles) return false;
+		if (!Features['battle'].BattleBot.battles[tarRoom]) return this.reply('Battle "' + tarRoom + '" not found');
+		var result;
+		try {
+			result = Features['battle'].BattleBot.battles[tarRoom].eval(arg);
+			this.say(room, '``' + JSON.stringify(result) + '``');
+		} catch (e) {
+			this.say(room, e.name + ": " + e.message);
+		}
 	},
 
 	reloadteams: function (arg, by, room, cmd) {
 		if (!this.isExcepted) return false;
+		this.sclog();
 		if (Features['battle'].TeamBuilder.loadTeamList(true)) {
 			this.reply(this.trad('s'));
 		} else {
@@ -146,6 +39,7 @@ exports.commands = {
 
 	reloadbattle: function (arg, by, room, cmd) {
 		if (!this.isExcepted) return false;
+		this.sclog();
 		try {
 			var data = Features['battle'].BattleBot.data;
 			Tools.uncacheTree('./features/battle/battle-bot.js');
@@ -162,6 +56,7 @@ exports.commands = {
 	unblockchallenges: 'blockchallenges',
 	blockchallenges: function (arg, by, room, cmd) {
 		if (!this.isRanked(Tools.getGroup('admin'))) return;
+		this.sclog();
 		if (cmd === "blockchallenges") {
 			this.say('', '/blockchallenges');
 			this.say(room, this.trad('b'));
@@ -173,11 +68,10 @@ exports.commands = {
 
 	move: function (arg, by, room, cmd) {
 		if (!this.isExcepted) return false;
+		this.sclog();
 		if (this.roomType !== 'battle') return this.reply(this.trad('notbattle'));
 		try {
-			if (!arg) Features['battle'].BattleBot.receive(room, "|forcemove|");
-			else if (arg === "random") Features['battle'].BattleBot.receive(room, "|forcemoverandom|");
-			else this.say(room, '/choose ' + arg);
+			Features['battle'].BattleBot.battles[room].makeDecision(true);
 		} catch (e) {
 			this.reply('Error: ' + sys.inspect(e));
 		}
@@ -185,24 +79,35 @@ exports.commands = {
 
 	jointours: function (arg, by, room, cmd) {
 		if (!this.can('jointour')) return false;
-		if (this.roomType !== 'chat') return this.reply(this.trad('notchat'));
+		var tarRoom = room;
+		var targetObj = Tools.getTargetRoom(arg);
+		var textHelper = '';
+		if (targetObj && this.isExcepted) {
+			arg = targetObj.arg;
+			tarRoom = targetObj.room;
+			textHelper = ' (' + tarRoom + ')';
+		}
+		if (!Bot.rooms[tarRoom] || Bot.rooms[tarRoom].type !== 'chat') return this.reply(this.trad('notchat') + textHelper);
 		if (!Settings.settings['jointours']) Settings.settings['jointours'] = {};
 		if (toId(arg) === "off") {
-			if (!Settings.settings['jointours'][room]) return this.reply(this.trad('ad') + ' ' + room);
-			delete Settings.settings['jointours'][room];
+			if (!Settings.settings['jointours'][tarRoom]) return this.reply(this.trad('ad') + ' ' + tarRoom);
+			delete Settings.settings['jointours'][tarRoom];
 			Settings.save();
-			this.reply(this.trad('d') + ' ' + room);
+			this.sclog();
+			this.reply(this.trad('d') + ' ' + tarRoom);
 		} else {
-			if (Settings.settings['jointours'][room]) return this.reply(this.trad('ae') + ' ' + room);
-			Settings.settings['jointours'][room] = 1;
+			if (Settings.settings['jointours'][tarRoom]) return this.reply(this.trad('ae') + ' ' + tarRoom);
+			Settings.settings['jointours'][tarRoom] = 1;
 			Settings.save();
-			this.reply(this.trad('e') + ' ' + room);
+			this.sclog();
+			this.reply(this.trad('e') + ' ' + tarRoom);
 		}
 	},
 
 	sb: 'searchbattle',
 	searchbattle: function (arg, by, room, cmd) {
 		if (!this.can('searchbattle')) return false;
+		if (Settings.lockdown) return;
 		if (!arg || !arg.length) return this.reply(this.trad('e1'));
 		var format = Tools.parseAliases(arg);
 		if (!Formats[format] || !Formats[format].ladder) return this.reply(this.trad('e21') + ' ' + format + ' ' + this.trad('e22'));
@@ -212,20 +117,24 @@ exports.commands = {
 		var team = Features['battle'].TeamBuilder.getTeam(format);
 		if (team) cmds.push('|/useteam ' + team);
 		cmds.push('|/search ' + arg);
-		Bot.send(cmds);
+		this.send(cmds);
 	},
 
 	ladderstop: 'ladderstart',
 	ladderstart: function (arg, by, room, cmd) {
 		if (!this.isRanked(Tools.getGroup('admin'))) return false;
 		if (cmd === 'ladderstop') {
+			this.sclog();
 			if (Features['battle'].LadderManager.stop()) this.reply(this.trad('stop'));
 			return;
 		}
 		var format = Tools.parseAliases(arg);
 		if (!Formats[format] || !Formats[format].ladder) return this.reply(this.trad('e21') + ' ' + format + ' ' + this.trad('e22'));
 		if (Formats[format].team && !Features['battle'].TeamBuilder.hasTeam(format)) return this.reply(this.trad('e31') + ' ' + format + '. ' + this.trad('e32'));
-		if (Features['battle'].LadderManager.start(format)) this.reply(this.trad('start') + ' ' + format);
+		if (Features['battle'].LadderManager.start(format)) {
+			this.reply(this.trad('start') + ' ' + format);
+			this.sclog();
+		}
 	},
 
 	challme: 'challenge',
@@ -233,6 +142,7 @@ exports.commands = {
 	chall: 'challenge',
 	challenge: function (arg, by, room, cmd) {
 		if (!this.can('challenge')) return false;
+		if (Settings.lockdown) return;
 		var args = arg.split(",");
 		if (cmd in {'challme': 1, 'challengeme': 1}) {
 			args = [by, arg];
@@ -245,7 +155,7 @@ exports.commands = {
 		var team = Features['battle'].TeamBuilder.getTeam(format);
 		if (team) cmds.push('|/useteam ' + team);
 		cmds.push('|/challenge ' + toId(args[0]) + ", " + format);
-		Bot.send(cmds);
+		this.send(cmds);
 	},
 
 	checktour: 'jointour',
@@ -253,9 +163,12 @@ exports.commands = {
 	jt: 'jointour',
 	jointour: function (arg, by, room, cmd) {
 		if (!this.can('jointour')) return false;
+		if (Settings.lockdown) return;
 		if (this.roomType !== 'chat') return this.reply(this.trad('notchat'));
 		if (!Features['battle'].TourManager.tourData[room] || !Features['battle'].TourManager.tourData[room].format) return this.reply(this.trad('e1'));
-		if (cmd === 'checktour') return this.say(room, '/tour getupdate');
+		if (cmd === 'checktour') {
+			return this.say(room, '/tour getupdate');
+		}
 		if (Features['battle'].TourManager.tourData[room].isJoined) return this.reply(this.trad('e2'));
 		if (Features['battle'].TourManager.tourData[room].isStarted) return this.reply(this.trad('e3'));
 		var format = toId(Features['battle'].TourManager.tourData[room].format);
@@ -278,11 +191,12 @@ exports.commands = {
 		if (!arg) return this.reply(this.trad('u1') + ': ' + this.cmdToken + cmd + ' ' + this.trad('u2'));
 		arg = arg.split(',');
 		var opt = toId(arg[0]);
+		var id, name;
 		switch (opt) {
 			case 'add':
 			case 'new':
 				if (arg.length < 4) return this.reply(this.trad('u1') + ': ' + this.cmdToken + cmd + ' ' + this.trad('u3'));
-				var name = toId(arg[1]);
+				name = toId(arg[1]);
 				var format = Tools.parseAliases(arg[2]);
 				var link = arg[3].trim();
 				if (!link) return this.reply(this.trad('u1') + ': ' + this.cmdToken + cmd + ' ' + this.trad('u2'));
@@ -299,7 +213,7 @@ exports.commands = {
 					}.bind(this));
 					res.on('end', function (end) {
 						if (data === '{"message":"Document not found."}') {
-							Bot.say(room, this.trad('err1'));
+							this.reply(this.trad('err1'));
 							return;
 						}
 						var team, packed;
@@ -308,25 +222,26 @@ exports.commands = {
 							packed = Tools.packTeam(team);
 						} catch (e) {
 							errlog(e.stack);
-							Bot.say(room, this.trad('err2'));
+							this.reply(this.trad('err2'));
 							return;
 						}
 						if (Features['battle'].TeamBuilder.addTeam(name, format, packed)) {
-							Bot.say(room, this.trad('team') + " __" + name + "__ " + this.trad('added'));
+							this.sclog();
+							this.reply(this.trad('team') + " __" + name + "__ " + this.trad('added'));
 						} else {
-							Bot.say(room, this.trad('err3'));
+							this.reply(this.trad('err3'));
 						}
 					}.bind(this));
 					res.on('error', function (end) {
-						Bot.say(room, this.trad('err4'));
+						this.reply(this.trad('err4'));
 					}.bind(this));
 				}.bind(this)).on('error', function (e) {
-					Bot.say(room, this.trad('err4'));
+					this.reply(this.trad('err4'));
 				}.bind(this));
 				break;
 			case 'get':
 				if (arg.length < 2) return this.reply(this.trad('u1') + ': ' + this.cmdToken + cmd + ' ' + this.trad('u5'));
-				var id = toId(arg[1]);
+				id = toId(arg[1]);
 				if (!Features['battle'].TeamBuilder.dynTeams[id]) return this.reply(this.trad('team') + " __" + name + "__ " + this.trad('notexists'));
 				try {
 					var data = Tools.exportTeam(Features['battle'].TeamBuilder.dynTeams[id].packed);
@@ -341,19 +256,21 @@ exports.commands = {
 				break;
 			case 'check':
 				if (arg.length < 2) return this.reply(this.trad('u1') + ': ' + this.cmdToken + cmd + ' ' + this.trad('u6'));
-				var id = toId(arg[1]);
+				id = toId(arg[1]);
 				if (!Features['battle'].TeamBuilder.dynTeams[id]) return this.reply(this.trad('team') + " __" + name + "__ " + this.trad('notexists'));
 				var cmds = [];
 				var team = Features['battle'].TeamBuilder.dynTeams[id].packed;
 				if (team) cmds.push('|/useteam ' + team);
 				cmds.push('|/challenge ' + toId(arg[2] || by) + ", " + Features['battle'].TeamBuilder.dynTeams[id].format);
-				Bot.send(cmds);
+				this.sclog();
+				this.send(cmds);
 				break;
 			case 'delete':
 			case 'remove':
 				if (arg.length < 2) return this.reply(this.trad('u1') + ': ' + this.cmdToken + cmd + ' ' + this.trad('u4'));
-				var name = toId(arg[1]);
+				name = toId(arg[1]);
 				if (Features['battle'].TeamBuilder.removeTeam(name)) {
+					this.sclog();
 					this.reply(this.trad('team') + " __" + name + "__ " + this.trad('removed'));
 				} else {
 					this.reply(this.trad('team') + " __" + name + "__ " + this.trad('notexists'));

@@ -4,22 +4,25 @@
 [![Build Status](https://travis-ci.org/Ecuacion/Pokemon-Showdown-Node-Bot.svg)](https://travis-ci.org/Ecuacion/Pokemon-Showdown-Node-Bot)
 [![Dependency Status](https://david-dm.org/Ecuacion/Pokemon-Showdown-Node-Bot.svg)](https://david-dm.org/Ecuacion/Pokemon-Showdown-Node-Bot)
 [![devDependency Status](https://david-dm.org/Ecuacion/Pokemon-Showdown-Node-Bot/dev-status.svg)](https://david-dm.org/Ecuacion/Pokemon-Showdown-Node-Bot#info=devDependencies)
+[![Version](https://img.shields.io/badge/version-0.7.2-orange.svg)](https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot#pokemon-showdown-bot-for-node)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT)
 
-This is a [Pokemon Showdown](https://github.com/Zarel/Pokemon-Showdown) bot written in JavaScript for [Node](http://nodejs.org/), based on [Pokemon Showdown Bot](https://github.com/TalkTakesTime/Pokemon-Showdown-Bot). 
+This is a [Pokemon Showdown](https://github.com/Zarel/Pokemon-Showdown) bot written in JavaScript for [Node](http://nodejs.org/)
 
-This bot is based on commands and features, which are explained below. This is intended to ease bot configuration and customization, separating commands in multiple files, multiple features in different folders and merging functions in Global Objects like Bot, CommandParser or Settings. This bot also works in multiple languages at the same time, useful for language rooms.
+This bot is based on commands and features, which are explained [here](https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot/blob/master/DEVELOPMENT.md). This is intended to ease bot configuration and customization, separating commands in multiple files, multiple features in different folders and merging functions in Global Objects like Bot, CommandParser or Settings. This bot also works in multiple languages at the same time, useful for language rooms.
 
 Features included in this package:
  - **Base:** Basic commands for getting basic information, manage command permissions, languages and dynamic commands (only-text commands useful for giving information).
- - **Chat-Plugins:** This includes a customizable 'quote' command, random answer and pokemon informational commands.
+ - **Chat-Plugins:** This includes a customizable database of jokes and quotes, pokemon informational commands, smogon-related commands and others like regdate or translate (to translate pokemon stuff into different languages).
  - **Moderation:** Automated chat moderation for infractions like spam, flood, caps, stretching, etc  This also includes a blacklist and welcome messages called join-phrases.
- - **Battle:** Automated battle bot for challenges, ladder and tournaments. This also includes teams management commands. Note that this is not an artificial intelligence, just an improvised algorithm that simulates in-game players (just for fun).
+ - **Battle:** Automated battle bot for challenges, ladder and tournaments. This also includes teams management commands. Note that this is not an artificial intelligence, so it can't learn stuff and is usually easy to win it.
  - **Chat Logger:** Stores logs of chat rooms and/or pms. This also includes an optional logs server.
- - **Tournaments:** A single command for creating, starting and set auto-dq of a tournament automatically.
- - **Auto Invite:** Automatically sends '/invite [room]' to room auth of a private room when they joins other room with a relation. For example if you have a secondary staff room and you want to get invited when you join lobby.
- - **Youtube link recognition:** If this feature is enabled in a room, when an user send a youtube link, the bot send a message with the title of the video.
+ - **Tournaments:** A single command for creating, starting and set auto-dq of a tournament automatically. This also includes an optional tournaments leaderboards system.
  - **Games:** A collection of chat games for your Pokemon Showdown Bot
+ - **Auto Invite:** Automatically sends '/invite [room]' to room auth of a private room when they joins other room with a relation. For example if you have a secondary staff room and you want to get invited when you join lobby.
+ - **Youtube link recognition:** If this feature is enabled in a room, when an user sends a youtube link, the bot sends a message with the title of the video.
+ - **Group Chats:** Some tools for group chats (temporal rooms) such as automated joining and automated roomauth promotion.
+ 
 
 Installation
 ------------
@@ -36,46 +39,25 @@ Then open a shell console, use `cd` to reach the directory of the bot and instal
 ```
 $ npm install --production
 ```
-If you want to use `Gulp` test, install all dependencies with `npm install`
+If you want to use `npm test` for developement, install all dependencies with `npm install`
+
+To configure your bot, copy `config-example.js` to `config.js` and edit that file. You can specify bot login credentials among other things. If you don't specify credentials, the bot will log in a random username started by 'Bot'. Read the [Configuration Guide](https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot/blob/master/CONFIGGUIDE.md) for more information
 
 Now, to start the bot use:
 ```
-$ node index.js
+$ node bot
 ```
 
-To configure your bot, copy `config-example.js` to `config.js` and edit that file. You can specify bot login credentials among other things. If you don't specify credentials, the bot will log in a random username started by 'Bot'. Read the [Configuration Guide](https://gist.github.com/Ecuacion/351a0a467bc5b057e86f) for more information
-
-Keeping your bot updated
-------------
-
-If you know all about [Git](https://git-scm.com/book/en/v1/Getting-Started) you don't need to read this. This is just for people who want to make changes in their bots, but still want to keep them updated regarding this repo.
-
-First, fork this repo. You can do it with the button `Fork`
-
-Second, clone your repo in your computer, you can do it with GitHub desktop Client for [Windows](https://windows.github.com/) or [Mac](https://mac.github.com/) or with a shell console:
+if you have an old version of `Pokemon Showdown Node Bot` and you want to update it, you can use: 
 ```
-$ git clone <your own fork> <My-Bot-Example-Folder>
+git pull https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot.git
 ```
-
-Third, create a remote to get the updates (first use `cd` to reach the directory of your bot):
-```
-$ git remote add upstream https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot.git
-```
-
-Now, you can make changes, and commit them.
-
-When you want to update, you can follow these steps:
- - Open a shell console and use `cd` to reach the directory of your bot
- - If you have uncommited changes use `git add --all` and `git commit -m "Your commit message"`
- - Use `git fetch upstream` to update your base version of Pokemon-Showdown-Node-Bot
- - Use `git checkout master` an then `git merge remotes/upstream/master`
- - If you get conflicts, solve them and use `git commit -a`
- - Once merged, your bot is updated
+Don't forget to use `npm install --production` after each update to re-install the outdated dependencies.
 
 Configuration
 ------------
 
-Once copied `config.js` from `config-example.js` you can edit config options to customize the bot.
+Check the [configuration guide](https://github.com/Ecuacion/Pokemon-Showdown-Node-Bot/blob/master/CONFIGGUIDE.md) for more information.
 
 **Connection Details**
  - `Config.server`: Server url, for example main server url is `sim.smogon.com`
@@ -111,6 +93,7 @@ Once copied `config.js` from `config-example.js` you can edit config options to 
  - `Config.permissionExceptions`: Exceptions for commands permissions
  - `Config.botguide`: Bot commands guide link
  - `Config.pmhelp`: Help message said when users pm the bot with no commands
+ - `Config.ignoreRooms:` Room that will be ignored by CommandParser you you can use commands on those rooms. For example if you want to log the room without interfering with other bots commands. 
 
 **Language Config**
  - `Config.language`: Set default language
@@ -125,6 +108,7 @@ Credits
  
 Contributors:
 
+ - [Freigeist](https://github.com/Freigeist) (Languages/Translation feature and bug fixes)
  - [Irraquated](https://github.com/Irraquated) (Languages and bug fixes)
  - [panpawn](https://github.com/panpawn) (YouTube feature, fixes)
  - [Spudling](https://github.com/Spudling) (German translation)
@@ -133,4 +117,3 @@ Part of this code is imported from other developments, so credits to:
 		
  - Quinella, [Morfent](https://github.com/Morfent) and [TalkTakesTime](https://github.com/TalkTakesTime) developers of [Pokemon-Showdown-Bot](https://github.com/TalkTakesTime/Pokemon-Showdown-Bot)
  - [Guangcong Luo](https://github.com/Zarel) and other contributors of [Pokemon Showdown](https://github.com/Zarel/Pokemon-Showdown)
- 

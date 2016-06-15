@@ -2,13 +2,6 @@
 	Basic Commands
 */
 
-function setPermission(room, perm, rank) {
-	if (!Settings.settings.commands) Settings.settings.commands = {};
-	if (!Settings.settings.commands[room]) Settings.settings.commands[room] = {};
-	Settings.settings.commands[room][perm] = rank;
-	Settings.save();
-}
-
 Settings.addPermissions(['say']);
 
 exports.commands = {
@@ -20,7 +13,7 @@ exports.commands = {
 
 	git: 'github',
 	github: function () {
-		this.restrictReply(Tools.stripCommands(Settings.package.homepage), 'info');
+		if (Settings.package.repository) this.restrictReply(Tools.stripCommands(Settings.package.repository.url), 'info');
 	},
 
 	botversion: 'version',
@@ -88,11 +81,9 @@ exports.commands = {
 		if (!arg || arg.length > 18) return this.pmReply(this.trad('inv'));
 		if (arg === toId(Bot.status.nickName)) return this.pmReply(this.trad('bot'));
 		if (arg === toId(by)) return this.pmReply(this.trad('self'));
-		if (Settings.seen[arg]) {
-			var dSeen = Settings.seen[arg];
-			var lang = Config.language || 'english';
-			if (Settings.settings['language'] && Settings.settings['language'][room]) lang = Settings.settings['language'][room];
-			text += '**' + (dSeen.name || arg).trim() + '** ' + this.trad('s1') + ' __' + Tools.getTimeAgo(dSeen.time, lang).trim() + (this.trad('s2') ? ('__ ' + this.trad('s2')) : '__');
+		var dSeen = Settings.userManager.getSeen(arg);
+		if (dSeen) {
+			text += '**' + (dSeen.name || arg).trim() + '** ' + this.trad('s1') + ' __' + Tools.getTimeAgo(dSeen.time, this.language).trim() + (this.trad('s2') ? ('__ ' + this.trad('s2')) : '__');
 			if (dSeen.room) {
 				switch (dSeen.action) {
 					case 'j':
@@ -111,6 +102,45 @@ exports.commands = {
 			}
 		} else {
 			text += this.trad('n1') + ' ' + arg + ' ' + this.trad('n2');
+		}
+		this.pmReply(text);
+	},
+
+	publicalts: 'alts',
+	alts: function (arg) {
+		var text = '';
+		arg = toId(arg);
+		if (!arg || arg.length > 18) return this.pmReply(this.trad('inv'));
+		var alts = Settings.userManager.getAlts(arg);
+		if (alts && alts.length) {
+			if (this.can("alts")) {
+				var cmds = [];
+				var toAdd;
+				text += this.trad('alts') + " " + Settings.userManager.getName(arg) + ": ";
+				for (var i = 0; i < alts.length; i++) {
+					toAdd = alts[i] + (i < alts.length - 1 ? ", " : "");
+					if ((text + toAdd).length > 300) {
+						cmds.push(text);
+						text = "";
+					}
+					text += toAdd;
+				}
+				if (text.length) cmds.push(text);
+				this.pmReply(cmds);
+				return;
+			} else {
+				if (alts.length <= 10) {
+					text += this.trad('alts') + " " + Settings.userManager.getName(arg) + ": " + alts.join(", ");
+				} else {
+					var fAlts = [];
+					for (var i = alts.length - 1; i >= 0 && i > alts.length - 10; i--) {
+						fAlts.push(alts[i]);
+					}
+					text += this.trad('alts') + " " + Settings.userManager.getName(arg) + ": " + fAlts.join(", ") + ", (" + (alts.length - 10) + this.trad('more') + ")";
+				}
+			}
+		} else {
+			text += this.trad('n') + ' ' +  Settings.userManager.getName(arg);
 		}
 		this.pmReply(text);
 	},

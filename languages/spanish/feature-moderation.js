@@ -153,6 +153,17 @@ exports.translations = {
 			'in': 'en',
 			'err': 'Error: no se puede subir la lista de frases de entrada a hastebin'
 		},
+		modexception: {
+			'notchat': 'Este comando solo está disponible para las salas de chat',
+			'all': 'usuarios regulares',
+			'rank': 'el rango',
+			'modex-inf1': 'La exención de la moderación está activada para',
+			'modex-inf2': 'y superiores en esta sala',
+			'modex-set1': 'La exención de la moderación ha sido activada para',
+			'modex-set2': 'y superiores en esta sala',
+			'not1': 'Rango',
+			'not2': 'no encontrado'
+		},
 		mod: {
 			'notchat': 'Este comando solo está disponible para las salas de chat',
 			'u1': 'Uso correcto',
@@ -178,6 +189,7 @@ exports.translations = {
 		'stretch': 'Alargar demasiado las palabras',
 		'spoiler': 'Los Spoilers no están permitidos en esta sala',
 		'youtube': 'Los canales de Youtube no están permitidos en esta sala',
+		'replays': 'No se permiten replays en esta sala',
 		'server': 'Los servidores privados de Pokemon Showdown no están permitidos en esta sala',
 		'inapword': 'Su mensaje contiene una frase inapropiada',
 		'banword': 'Su mensaje contiene una frase prohibida',
@@ -190,6 +202,7 @@ exports.translations = {
 		'flood-0': 'Flood',
 		'spoiler-0': 'Spoiler',
 		'youtube-0': 'Canal de Youtube',
+		'replays-0': 'Replay',
 		'server-0': 'Servidores de PS',
 		'inapword-0': 'Inapropiado',
 		'banword-0': 'Frases Prohibidas',

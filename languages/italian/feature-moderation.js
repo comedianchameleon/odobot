@@ -153,6 +153,17 @@
 			'in': 'in',
 			'err': 'upload fallito, impossibile caricare su hastebin'
 		},
+		modexception: {
+			'notchat': 'Questo comando è disponibile solo nelle chat',
+			'all': 'utenti regolari',
+			'rank': 'rank',
+			'modex-inf1': 'Moderazione eccezione è abilitato per',
+			'modex-inf2': 'o superiore in questa room',
+			'modex-set1': 'Moderazione eccezione è stata attivata per',
+			'modex-set2': 'o superiore in questa room',
+			'not1': 'Rank',
+			'not2': 'non trovato'
+		},
 		mod: {
 			'notchat': 'Questo comando è disponibile solo nelle chat',
 			'u1': 'Usage',
@@ -178,6 +189,7 @@
 		'stretch': 'Stretching',
 		'spoiler': 'Spoiler vietati',
 		'youtube': 'Youtube advertisement vietato',
+		'replays': 'replay distacco non sono ammessi in questa stanza',
 		'server': 'Server privati vietati',
 		'inapword': 'Messaggio inappropriato',
 		'banword': 'Frase bannata',
@@ -190,6 +202,7 @@
 		'flood-0': 'Flooding',
 		'spoiler-0': 'Spoiler',
 		'youtube-0': 'canale Youtube',
+		'replays-0': 'Replay',
 		'server-0': 'server privati',
 		'inapword-0': 'Inappropiato',
 		'banword-0': 'Parole Bannate',

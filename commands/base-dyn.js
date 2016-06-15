@@ -4,14 +4,25 @@
 
 Settings.addPermissions(['info', 'wall']);
 
-function getCmdList () {
+function getCmdList (head) {
 	var cmdArr = Object.keys(CommandParser.dynCommands).sort();
 	var newCmdArr = [];
 	for (var i = 0; i < cmdArr.length; i++) {
 		if (CommandParser.dynCommands[cmdArr[i]] && CommandParser.dynCommands[cmdArr[i]].substr(0, 4) === "/ref") continue;
 		newCmdArr.push(cmdArr[i]);
 	}
-	return newCmdArr.join(", ");
+	if (!newCmdArr.length) return null;
+	var buf = head, cmds = [];
+	for (var i = 0; i < newCmdArr.length; i++) {
+		if (buf.length + newCmdArr[i].length + (i < newCmdArr.length - 1 ? 2 : 0) > 300) {
+			cmds.push(buf);
+			buf = "";
+		}
+		buf += newCmdArr[i];
+		if (i < newCmdArr.length - 1) buf += ", ";
+	}
+	cmds.push(buf);
+	return cmds;
 }
 
 exports.commands = {
@@ -34,9 +45,9 @@ exports.commands = {
 		var perm = (cmd in {'wall': 1, 'dynwall': 1, 'infowall': 1}) ? 'wall' : 'info';
 		if (!this.can(perm) || this.roomType === 'pm') {
 			if (!arg) {
-				var list = getCmdList();
+				var list = getCmdList(this.trad('list') + ': ');
 				if (!list) return this.pmReply(this.trad('nocmds'));
-				return this.pmReply(this.trad('list') + ': ' + list);
+				return this.pmReply(list);
 			}
 			if (CommandParser.dynCommands[dcmd]) {
 				return this.pmReply(CommandParser.dynCommands[dcmd]);
@@ -45,9 +56,9 @@ exports.commands = {
 			}
 		} else {
 			if (!arg) {
-				var list = getCmdList();
+				var list = getCmdList(this.trad('list') + ': ');
 				if (!list) return this.reply(this.trad('nocmds'));
-				return this.reply(this.trad('list') + ': ' + list);
+				return this.reply(list);
 			}
 			if (CommandParser.dynCommands[dcmd]) {
 				if (perm === 'wall') return this.reply('/announce ' + CommandParser.dynCommands[dcmd]);
@@ -64,7 +75,8 @@ exports.commands = {
 		var dcmd = toId(arg);
 		if (CommandParser.dynCommands[dcmd]) {
 			delete CommandParser.dynCommands[dcmd];
-			CommandParser.saveDinCmds();
+			CommandParser.saveDynCmds();
+			this.sclog();
 			this.reply(this.trad('c') + ' "' + dcmd + '" ' + this.trad('d'));
 		} else {
 			this.reply(this.trad('c') + ' "' + dcmd + '" ' + this.trad('n'));
@@ -85,7 +97,8 @@ exports.commands = {
 			text = this.trad('c') + ' "' + dcmd + '" ' + this.trad('created');
 		}
 		CommandParser.dynCommands[dcmd] = CommandParser.tempVar;
-		CommandParser.saveDinCmds();
+		CommandParser.saveDynCmds();
+		this.sclog();
 		this.reply(text);
 	},
 
@@ -100,7 +113,8 @@ exports.commands = {
 		if (!CommandParser.dynCommands[dcmd]) return this.reply(this.trad('c') + ' "' + dcmd + '" ' + this.trad('n'));
 		if (CommandParser.dynCommands[dcmd].substr(0, 4) === "/ref") return this.reply(this.trad('c') + ' "' + dcmd + '" ' + this.trad('already'));
 		CommandParser.dynCommands[alias] = '/ref ' + dcmd;
-		CommandParser.saveDinCmds();
+		CommandParser.saveDynCmds();
+		this.sclog();
 		this.reply(this.trad('c') + ' "' + alias + '" ' + this.trad('alias') + ' "' + dcmd + '"');
 	},
 
@@ -127,6 +141,7 @@ exports.commands = {
 	temp: function (arg, by, room, cmd) {
 		if (!this.isRanked(Tools.getGroup('admin'))) return false;
 		if (arg) CommandParser.tempVar = Tools.stripCommands(arg);
+		this.sclog("Temp command-parser var changed");
 		this.reply('Temp: ' + CommandParser.tempVar);
 	}
 };

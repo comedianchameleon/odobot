@@ -3,7 +3,7 @@
 		/*
 		* Misc Commands
 		*/
-		pick: {'err': 'Devi impostare almeno due opzioni valide'},
+		pick: {'pick': 'Scelta a caso', 'err': 'Devi impostare almeno due opzioni valide'},
 		randomanswer: {
 			'answers': [
 				'Assegna punti a sì',
@@ -28,43 +28,121 @@
 				'Non contarci.'
 			]
 		},
-		usage: {
-			'stats': 'Usage stats'
+		regdate: {
+			'inv': 'Nome utente non valido',
+			'busy': 'Al momento di scaricare i dati, provare di nuovo in pochi secondi',
+			'err': 'Impossibile ottenere i dati da',
+			'user': 'Utente',
+			'not': 'non è registrato',
+			'regtime1': 'è stato registrato',
+			'regtime2': 'fa',
+			'regdate': 'è stato registrato su'
 		},
 		/*
-		* Quotes
+		* Smogon
+		*/
+		usage: {
+			'in': 'in',
+			'stats': 'Statistiche di utilizzo',
+			'data': 'Dati di utilizzo',
+			'usage': 'Uso corretto',
+			'tiererr1': 'Tier o formato',
+			'tiererr2': 'non trovato',
+			'tiererr3': 'non disponibile',
+			'err': 'Impossibile ottenere i dati di utilizzo di',
+			'busy': 'Download dei dati di utilizzo. Riprovare in pochi secondi',
+			'pokeerr1': 'Pokemon',
+			'pokeerr2': 'non disponibile in',
+			'pokeerr3': 'dati di utilizzo',
+			'pokeerr4': 'statistiche di utilizzo',
+			'notfound': 'I dati non trovato per',
+			'usagedata1': '#NAME di ',
+			'usagedata2': '',
+			'pokeusage': 'Uso',
+			'pokeraw': 'Raw',
+			'abilities': 'Abilità',
+			'items': 'Strumenti',
+			'moves': 'Mosse',
+			'spreads': 'Spreads',
+			'teammates': 'Compagne'
+		},
+		suspect: {
+			'tiererr1': 'Tier',
+			'tiererr2': 'non trovato',
+			'in': 'in',
+			'nosuspect': 'Non ci sono dati suspect test data trovato per tier',
+			'aux1': 'Usa',
+			'aux2': 'per impostare i dati sospetti'
+		},
+		setsuspect: {
+			'usage': 'Uso corretto',
+			'tier': 'Tier',
+			'notfound': 'non trovato',
+			'd1': 'Suspect test i dati di secondo tier',
+			'd2': 'è stato rimosso'
+		},
+		deftier: {
+			'usage': 'Uso corretto',
+			'notchat': 'Questo comando è solo disponibile nelle chat room',
+			'tiererr1': 'Tier',
+			'tiererr2': 'non trovato',
+			'set': 'Tier di default per questa room è ora'
+		},
+		/*
+		* Quotes & Jokes
 		*/
 		quote: {
-			'nodata': 'Database vuoto'
-		},
-		setquote: {
-			'notemp': 'Non ci sono string temporanee da settare, usa **stemp** prima di ciò',
-			'q': 'Citazione',
-			'modified': 'has been successfully modified',
-			'created': 'has been successfully created'
-		},
-		delquote: {
-			'q': 'Citazione',
-			'd': 'rimosso con successo',
-			'n': 'non esiste'
-		},
-		viewquotes: {
-			'q': 'Citazione',
+			'u1': 'Usage',
+			'u2': '[id], [citazione]',
+			'empty': 'Database è vuoto',
+			'noid': 'È necessario specificare un documento d\'identità valido',
+			'quote': 'Citazione',
 			'n': 'non esiste',
-			'empty': 'Elenco di citazioni è vuoto',
-			'list': 'Elenco di citazioni',
-			'err': 'upload fallito, impossibile caricare su hastebin'
+			'd': 'è stato eliminato con successo',
+			'already': 'esiste già',
+			'modified': 'è stato modificato con successo',
+			'created': 'è stato creato con successo'
 		},
-		addquotes: {
-			'notfound': 'Error: Document not found',
-			'd': 'Il download del documento Hastebin',
-			'add': 'aggiunti',
-			'q': 'citaziones',
-			'err': 'Error: impossibile caricare su hastebin'
+		listquotes: {
+			'empty': 'Elenco di citazioni è vuota',
+			'list': 'Lista di citazioni',
+			'err': 'Errore: non è riuscito a caricare le virgolette per Hastebin'
+		},
+		joke: {
+			'u1': 'Usage',
+			'u2': '[id], [battuta]',
+			'empty': 'Database è vuoto',
+			'noid': 'È necessario specificare un documento d\'identità valido',
+			'joke': 'Battuta',
+			'n': 'non esiste',
+			'd': 'è stato eliminato con successo',
+			'already': 'esiste già',
+			'modified': 'è stato modificato con successo',
+			'created': 'è stato creato con successo'
+		},
+		listjokes: {
+			'empty': 'Elenco di battute è vuota',
+			'list': 'Elenco di battute',
+			'err': 'Errore: non è riuscito a caricare scherzi a Hastebin'
 		},
 		/*
 		* Pokemon Commands
 		*/
+		translate: {
+			'u1': 'Usage',
+			'u2': '[parola], (lingua di partenza), (lingua di arrivo)',
+			'lnot1': 'Lingua',
+			'lnot2': 'non disponibile. Lingue disponibili',
+			'not1': 'Pokemon, ability, item, move o nature chiamato',
+			'not2': 'non trovato o non disponibile in traduzioni',
+			'not3': 'non trovato',
+			'tra': 'Traduzioni di',
+			'pokemon': 'Pokemon',
+			'abilities': 'Ability',
+			'items': 'Item',
+			'moves': 'Move',
+			'natures': 'Nature'
+		},
 		randompokemon: {'err': 'C\'è stato un errore, riprova più tardi'},
 		gen: {
 			'err': 'C\'è stato un errore, riprova più tardi',

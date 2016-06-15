@@ -153,6 +153,17 @@
 			'in': 'dans',
 			'err': 'Erreur: Je ne peux pas télécharger les phrases de connections sur hastebin'
 		},
+		modexception: {
+			'notchat': 'Cette commande est avaliable seulement pour les salles de chat',
+			'all': 'utilisateurs réguliers',
+			'rank': 'rank',
+			'modex-inf1': 'Modération exception est activé pour',
+			'modex-inf2': 'ou haut dans cette salle',
+			'modex-set1': 'Modération exception a été activé pour',
+			'modex-set2': 'ou haut dans cette salle',
+			'not1': 'Rank',
+			'not2': 'non trouvé'
+		},
 		mod: {
 			'notchat': 'Cette commande est avaliable seulement pour les salles de chat',
 			'u1': 'Usage',
@@ -178,6 +189,7 @@
 		'stretch': 'Stretching',
 		'spoiler': 'Spoilers ne sont pas admis dans cette chat',
 		'youtube': 'Filières de Youtube ne sont pas admis dans cette chat',
+		'replays': 'Les replays sont interdit dans ce room',
 		'server': 'Serveurs de PS ne sont pas admis dans cette chat',
 		'inapword': 'Votre message contenait une phrase inapproprié',
 		'banword': 'Votre message contenait une phrase interdit',
@@ -190,6 +202,7 @@
 		'flood-0': 'Flood',
 		'spoiler-0': 'Spoiler',
 		'youtube-0': 'Filières de Youtube',
+		'replays-0': 'Replay',
 		'server-0': 'Serveur de PS',
 		'inapword-0': 'Inapproprié',
 		'banword-0': 'Mots Interdits',

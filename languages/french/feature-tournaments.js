@@ -17,6 +17,41 @@
 			'notstarted': 'Erreur: le tournoi n\'a pas commencé, probablement parce que je n\'ai pas la permission de créer des tournois ou des commandes ont été changées.',
 			'param': 'Paramètre',
 			'paramhelp': 'introuvable, paramètre valide sont'
+		},
+		official: {
+			'not': 'Classements est pas activé pour la salle',
+			'notour': 'Il n\'y a pas un tournoi dans cette salle',
+			'already': 'Le tournoi était déjà officielle',
+			'already-not': 'Le tournoi était déjà non officielle',
+			'official': 'Ce tournoi est maintenant officiel et comptera pour les classements',
+			'unofficial': 'Ce tournoi est plus officielle'
+		},
+		leaderboard: {
+			'usage': 'Usage',
+			'invuser': 'Nom d\'utilisateur invalide',
+			'rank': 'Classement des',
+			'in': 'dans',
+			'points': 'Points',
+			'w': 'Gagnant',
+			'f': 'Finaliste',
+			'sf': 'Demi-finaliste',
+			'times': 'fois',
+			'total': 'Total',
+			'tours': 'tours joués',
+			'bwon': 'batailles gagnées',
+			'not': 'Classements est pas activé pour la salle',
+			'empty': 'Il n\'y a pas encore inscrit tournois salle',
+			'table': 'Table Leaderboards',
+			'err': 'Erreur téléchargement table classements à Hastebin',
+			'use': 'Utilisez',
+			'confirm': 'pour confirmer les données de leaderboars réinitialisés salle',
+			'invhash': 'Code de hachage non valide',
+			'data': 'Données Leaderboard pour la salle',
+			'del': 'a été remis à zéro',
+			'wasset': 'Configuration Leaderboards a été fixé pour la salle',
+			'wasdisabled': 'Leaderboards a été désactivée pour la chambre',
+			'alrdisabled': 'Leaderboards est déjà désactivé pour la chambre',
+			'unknown': 'Option inconnue'
 		}
 	}
 };

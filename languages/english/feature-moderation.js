@@ -153,6 +153,17 @@ exports.translations = {
 			'in': 'in',
 			'err': 'upload failure, could not upload joinphrases to hastebin'
 		},
+		modexception: {
+			'notchat': 'This command is only available for chat rooms',
+			'all': 'regular users',
+			'rank': 'rank',
+			'modex-inf1': 'Moderation exception is enabled for',
+			'modex-inf2': 'or higher in this room',
+			'modex-set1': 'Moderation exception was enabled for',
+			'modex-set2': 'or higher in this room',
+			'not1': 'Rank',
+			'not2': 'not found'
+		},
 		mod: {
 			'notchat': 'This command is only available for chat rooms',
 			'u1': 'Usage',
@@ -178,6 +189,7 @@ exports.translations = {
 		'stretch': 'Stretching',
 		'spoiler': 'Spoilers are not allowed in this room',
 		'youtube': 'Youtube channels are not allowed in this room',
+		'replays': 'Replays are not allowed in this room',
 		'server': 'Pokemon Showdown private servers are not allowed in this room',
 		'inapword': 'Your message contained an inappropriate phrase',
 		'banword': 'Your message contained a banned phrase',
@@ -190,6 +202,7 @@ exports.translations = {
 		'flood-0': 'Flooding',
 		'spoiler-0': 'Spoiler',
 		'youtube-0': 'Youtube channel',
+		'replays-0': 'Replay',
 		'server-0': 'Private Servers',
 		'inapword-0': 'Inappropriate',
 		'banword-0': 'Bannedwords',

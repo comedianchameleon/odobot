@@ -154,6 +154,17 @@
 			'in': 'in',
 			'err': 'Fehler beim Hochladen, konnte Beitrittsnachrichtenliste nicht zu Hastebin hochladen'
 		},
+		modexception: {
+			'notchat': 'Dieser Befehl kann nur in Chaträumen verwendet werden',
+			'all': 'normale Benutzer',
+			'rank': 'rang',
+			'modex-inf1': 'Moderation ausgenommen sind aktiviert',
+			'modex-inf2': 'oder höher in diesem Raum',
+			'modex-set1': 'Moderation Ausnahme wurde aktiviert',
+			'modex-set2': 'oder höher in diesem Raum',
+			'not1': 'Rang',
+			'not2': 'nicht gefunden'
+		},
 		mod: {
 			'notchat': 'Dieser Befehl kann nur in Chaträumen verwendet werden',
 			'u1': 'Verwendung',
@@ -179,6 +190,7 @@
 		'stretch': 'Wortdehnung',
 		'spoiler': 'Spoiler sind in diesem Raum nicht erlaubt',
 		'youtube': 'Youtube-Channel sind in diesem Raum nicht erlaubt',
+		'replays': 'Replays schicken ist nicht erlaubt in diesem Raum',
 		'server': 'Private Pokemon Showdown Server sind in diesem Raum nicht erlaubt',
 		'inapword': 'Deine Nachicht enthält einen unangebrachten Ausdruck',
 		'banword': 'Deine Nachicht enthält einen verbotenen Ausdruck',
@@ -191,6 +203,7 @@
 		'flood-0': 'Flood',
 		'spoiler-0': 'Spoiler',
 		'youtube-0': 'Youtube-Channel',
+		'replays-0': 'Replay',
 		'server-0': 'Private Server',
 		'inapword-0': 'Unangebracht',
 		'banword-0': 'Verbotene Ausdrücke',

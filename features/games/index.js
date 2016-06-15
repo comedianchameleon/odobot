@@ -7,7 +7,14 @@ const MAX_COMMAND_RECURSION = 10;
 exports.id = 'games';
 exports.desc = 'A collection of chat games';
 
-var gamesList = ['poke-hangman.js', 'poke-anagrams.js'];
+var gamesList = [
+	'hangman.js', 'poke-hangman.js',
+	'anagrams.js', 'poke-anagrams.js',
+	'trivia.js', 'kunc.js',
+	'blackjack.js',
+	'ambush.js',
+	'passthebomb.js'
+];
 
 var Builders = exports.Builders = {};
 var Games = exports.Games = {};
@@ -76,9 +83,6 @@ var cmdParser = exports.cmdParser = function (room, by, msg) {
 			};
 			var context = new Context(opts);
 			try {
-				if (!Tools.equalOrHigherRank(by, true)) {
-					if (CommandParser.resourceMonitor.countcmd(by)) return;
-				}
 				cmdr("game".cyan + " | " + handler + ' | arg: ' + args + ' | by: ' + by + ' | room: ' + room + ' | cmd: ' + cmd);
 				commands[handler].call(context, args, by, room, cmd, Games[room]);
 			} catch (e) {
@@ -105,6 +109,7 @@ exports.getTitle = function (id) {
 };
 
 exports.newGame = function (room, type, args) {
+	if (Settings.lockdown) return {err: true};
 	if (Games[room]) return {err: true};//Another game is already started
 	var builder = null;
 	for (var i in Builders) {
@@ -117,7 +122,7 @@ exports.newGame = function (room, type, args) {
 	if (!game) return {err: true};
 	if (typeof game === "string") return {err: 'args', info: game};
 	Games[room] = game;
-	Games[room].start();
+	Games[room].init();
 };
 
 exports.deleteGame = function (room) {
@@ -135,6 +140,11 @@ exports.init = function () {
 };
 
 exports.parse = null;
+
+exports.readyToDie = function () {
+	var gamesKeys = Object.keys(Games);
+	if (gamesKeys.length) return ("Active games in: " + gamesKeys.join(', '));
+};
 
 exports.destroy = function () {
 	Settings.deleteParseFilter("games");

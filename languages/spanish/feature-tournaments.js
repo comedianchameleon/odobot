@@ -17,6 +17,41 @@ exports.translations = {
 			'notstarted': 'Error: El torneo no ha empezado, probablemente por un cambio en los permisos o en los comandos',
 			'param': 'Parámetro',
 			'paramhelp': 'no encontrado, Los parámetros correctos son'
+		},
+		official: {
+			'not': 'La funcion Leaderboards no esta disponibe para la sala',
+			'notour': 'No hay ningún torneo en esta sala',
+			'already': 'El torneo ya era oficial',
+			'already-not': 'El torneo no es oficial',
+			'official': 'Este torneo es ahora oficial y contará para el Leaderboards',
+			'unofficial': 'Este torneo ha dejado de ser oficial'
+		},
+		leaderboard: {
+			'usage': 'Uso correcto',
+			'invuser': 'Nombre de usuario no válido',
+			'rank': 'Ranking de',
+			'in': 'en',
+			'points': 'Puntos',
+			'w': 'Ganador',
+			'f': 'Finalista',
+			'sf': 'Semifinalista',
+			'times': 'veces',
+			'total': 'Total',
+			'tours': 'torneos jugados',
+			'bwon': 'batlalas ganadas',
+			'not': 'La funcion Leaderboards no esta disponibe para la sala',
+			'empty': 'No hay ningún torneo registrado aún para la sala',
+			'table': 'Tabla del leaderboards',
+			'err': 'Error subiendo la tabla del leaderboards a Hastebin',
+			'use': 'Usa',
+			'confirm': 'para confirmar el borrado de los datos de leaderboards en la sala',
+			'invhash': 'Código no válido',
+			'data': 'Datos del Leaderboars de la sala',
+			'del': 'borrados',
+			'wasset': 'La configuracion del sistema de Leaderboards ha sido establecida para la sala',
+			'wasdisabled': 'La funcion Leaderboards ha sido desactivada para la sala',
+			'alrdisabled': 'La funcion Leaderboards ya estaba desactivada en la sala',
+			'unknown': 'Opción desconocida'
 		}
 	}
 };

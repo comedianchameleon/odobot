@@ -17,6 +17,41 @@
 			'notstarted': 'Error: il torneo non è iniziato, non hai i permessi o i comandi sono cambiati.',
 			'param': 'Parametro',
 			'paramhelp': 'non trovato, parametro valido sono'
+		},
+		official: {
+			'not': 'Classifiche non è abilitato per la room',
+			'notour': 'Nessun torneo nella room',
+			'already': 'Il torneo era già ufficiale',
+			'already-not': 'Il torneo era già ufficioso',
+			'official': 'Questo torneo è ormai ufficiale e conterà per le classifiche',
+			'unofficial': 'Questo torneo non è ufficiale'
+		},
+		leaderboard: {
+			'usage': 'Usage',
+			'invuser': 'Nome utente non valido',
+			'rank': 'Ranking di',
+			'in': 'in',
+			'points': 'Punti',
+			'w': 'Vincitore',
+			'f': 'Finalista',
+			'sf': 'Semifinalista',
+			'times': 'volte',
+			'total': 'Totale',
+			'tours': 'tour giocati',
+			'bwon': 'battaglie vinte',
+			'not': 'Classifiche non è abilitato per la room',
+			'empty': 'Non ci sono ancora i tornei registrati per room',
+			'table': 'Tavolo classifiche',
+			'err': 'Errore caricamento di tabella classifiche per Hastebin',
+			'use': 'Utilizzare',
+			'confirm': 'per confermare resettare i dati leaderboars per room',
+			'invhash': 'Codice hash non valido',
+			'data': 'Dati leaderboard per la room',
+			'del': 'è stato resettato',
+			'wasset': 'Configurazione Leaderboards è stato fissato per room',
+			'wasdisabled': 'Classifiche è stato disattivato per room',
+			'alrdisabled': 'Classifiche è già disabilitato per room',
+			'unknown': 'Opzione sconosciuta'
 		}
 	}
 };

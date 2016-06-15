@@ -36,9 +36,10 @@ exports.title = 'Poke-Anagrams';
 exports.aliases = ['pa', 'pokemonanagrams'];
 
 var parser = function (type, data) {
+	var txt;
 	switch (type) {
 		case 'start':
-			var txt = trans('start', this.room);
+			txt = trans('start', this.room);
 			if (this.maxGames) txt += ". " + trans('maxgames1', this.room) + " __" + this.maxGames + " " + trans('maxgames2', this.room) + "__";
 			if (this.maxPoints) txt += ". " + trans('maxpoints1', this.room) + " __" + this.maxPoints + " " + trans('maxpoints2', this.room) + "__";
 			txt += ". " + trans('timer1', this.room) + " __" + Math.floor(this.answerTime / 1000).toString() + " " + trans('timer2', this.room) + "__";
@@ -59,7 +60,7 @@ var parser = function (type, data) {
 			break;
 		case 'win':
 			var t = parseWinners(data.winners, this.room);
-			var txt = "**" + trans('end', this.room) + "** ";
+			txt = "**" + trans('end', this.room) + "** ";
 			switch (t.type) {
 				case 'win':
 					txt += trans('grats1', this.room) + " " + t.text + " " + trans('grats2', this.room) + " __" + data.points + " " + trans('points', this.room) + "__!";
@@ -83,8 +84,8 @@ var parser = function (type, data) {
 	}
 };
 
-var wordGenerator = function (arr) {
-	return RandomGenerator.randomNoRepeat(arr);
+var wordGenerator = function (arr, lang) {
+	return RandomGenerator.randomNoRepeat(arr, lang);
 };
 
 exports.newGame = function (room, opts) {
@@ -105,13 +106,13 @@ exports.newGame = function (room, opts) {
 			case 'maxgames':
 			case 'games':
 				temp = parseInt(opts[i]) || 0;
-				if (temp && temp < 0) return "games ( >= 0 ), maxpoints, time";
+				if (temp && temp < 0) return "games ( >= 0 ), maxpoints, time, lang";
 				generatorOpts.maxGames = temp;
 				break;
 			case 'points':
 			case 'maxpoints':
 				temp = parseInt(opts[i]) || 0;
-				if (temp && temp < 0) return "games, maxpoints ( >= 0 ), time";
+				if (temp && temp < 0) return "games, maxpoints ( >= 0 ), time, lang";
 				generatorOpts.maxPoints = temp;
 				break;
 			case 'answertime':
@@ -119,11 +120,25 @@ exports.newGame = function (room, opts) {
 			case 'time':
 				temp = parseFloat(opts[i]) || 0;
 				if (temp) temp *= 1000;
-				if (temp && temp < (5 * 1000)) return "games, maxpoints, time ( seconds, >= 5 )";
+				if (temp && temp < (5 * 1000)) return "games, maxpoints, time ( seconds, >= 5 ), lang";
 				generatorOpts.answerTime = temp;
 				break;
+			case 'lang':
+			case 'language':
+				var langAliases = {
+					'en': 'english',
+					'es': 'spanish',
+					'de': 'german',
+					'fr': 'french',
+					'it': 'italian'
+				};
+				if (typeof opts[i] !== "string") return "games, maxpoints, time, lang (" + Object.keys(Tools.translations).join('/') + ")";
+				var lng = langAliases[toId(opts[i])] || toId(opts[i]);
+				if (!Tools.translations[lng]) return "games, maxpoints, time, lang (" + Object.keys(Tools.translations).join('/') + ")";
+				generatorOpts.language = lng;
+				break;
 			default:
-				return "games, maxpoints, time";
+				return "games, maxpoints, time, lang";
 		}
 	}
 	if (!generatorOpts.maxGames && !generatorOpts.maxPoints) generatorOpts.maxGames = 5;
@@ -139,9 +154,8 @@ exports.commands = {
 	g: function (arg, by, room, cmd, game) {
 		game.guess(by.substr(1), arg);
 	},
-	v: 'view',
 	view: function (arg, by, room, cmd, game) {
-		if (this.status < 2) return;
+		if (game.status < 2) return;
 		this.restrictReply("**" + exports.title + ": [" + game.clue + "]** " + game.randomizedChars.join(', '), 'games');
 	},
 	end: 'endanagrams',

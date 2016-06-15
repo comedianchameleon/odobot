@@ -11,7 +11,7 @@ function canChallenge(i, nBattles) {
 
 exports.parse = function (room, message, isIntro, spl) {
 	if (spl[0] !== 'updatechallenges') return;
-	var nBattles = Object.keys(Features['battle'].BattleBot.data).length;
+	var nBattles = Object.keys(Features['battle'].BattleBot.battles).length;
 	try {
 		exports.challenges = JSON.parse(message.substr(18));
 	} catch (e) {return;}
@@ -20,7 +20,7 @@ exports.parse = function (room, message, isIntro, spl) {
 			if (canChallenge(i, nBattles)) {
 				var format = exports.challenges.challengesFrom[i];
 
-				if (!(format in Formats) || !Formats[format].chall) {
+				if (Settings.lockdown || !(format in Formats) || !Formats[format].chall) {
 					Bot.say('', '/reject ' + i);
 					continue;
 				}
