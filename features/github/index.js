@@ -40,7 +40,7 @@ function startWebHook (secret, port) {
 			var commitMessage = commit.message;
 			var shortCommit = /.+/.exec(commitMessage)[0];
 			if (commitMessage !== shortCommit) {
-				shortCommit += '&hellip;';
+				shortCommit += '...';
 			}
 			message = "";
 			message += "<font color='FF00FF'>" + Tools.escapeHTML(repo) + "</font>/";

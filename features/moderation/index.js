@@ -296,6 +296,7 @@ function parseChat (room, time, by, message) {
 		}
 	}
 
+	/*
 	if (modSettings['psservers'] !== 0 && msg.toLowerCase().indexOf(".psim.us") > -1) {
 		var serverAds = getServersAds(msg);
 		for (var z = 0; z < serverAds.length; z++) {
@@ -310,6 +311,7 @@ function parseChat (room, time, by, message) {
 			}
 		}
 	}
+	*/
 
 	/****************************
 	* Banned Words
